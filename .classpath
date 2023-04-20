@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.8"/>
+	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="lib" path="lib/weka.jar" sourcepath="D:/eclipse-workspace/KNN_NUMBER/resource/weka-src.jar"/>
+	<classpathentry kind="lib" path="lib/lejos/3rdparty/bcel.jar"/>
+	<classpathentry kind="lib" path="lib/lejos/3rdparty/bluecove-gpl.jar"/>
+	<classpathentry kind="lib" path="lib/lejos/3rdparty/bluecove.jar"/>
+	<classpathentry kind="lib" path="lib/lejos/3rdparty/commons-cli.jar"/>
+	<classpathentry kind="lib" path="lib/lejos/3rdparty/jcommon.jar"/>
+	<classpathentry kind="lib" path="lib/lejos/3rdparty/jfreechart.jar"/>
+	<classpathentry kind="lib" path="lib/lejos/3rdparty/stax-api-1.0.1.jar"/>
+	<classpathentry kind="lib" path="lib/lejos/charting.jar" sourcepath="D:/eclipse-workspace/KNN_NUMBER/resource/charting-src.zip"/>
+	<classpathentry kind="lib" path="lib/lejos/jtools.jar" sourcepath="D:/eclipse-workspace/KNN_NUMBER/resource/jtools-src.zip"/>
+	<classpathentry kind="lib" path="lib/lejos/pccomm.jar" sourcepath="D:/eclipse-workspace/KNN_NUMBER/resource/pccomm-src.zip"/>
+	<classpathentry kind="lib" path="lib/lejos/pctools.jar" sourcepath="D:/eclipse-workspace/KNN_NUMBER/resource/pctools-src.zip"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>
