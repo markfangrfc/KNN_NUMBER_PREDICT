@@ -29,6 +29,7 @@ public class KNNTest {
 	static int TOTAL_ANGLE = 360;
 	static  IBk knn = new IBk();
 	static Instance testInstance=null;
+	static BufferedReader br;
 	static void initNTX() {
 		NXTConnector conn = new NXTConnector();
 		/*
@@ -52,8 +53,9 @@ public class KNNTest {
 		light.setFloodlight(Color.GREEN);
 		MotorPort port =  MotorPort.A;
 		motor = new NXTMotor(port);		
-		//Motor.A.rotateTo(0);
-		Motor.A.setSpeed(100);
+		Motor.A.rotateTo(0);
+		Motor.A.setSpeed(50);
+		br = new BufferedReader(new InputStreamReader(System.in));		
 	}
 	static int[][] scanNumber(int[][] result,int loop) throws Exception{
 		//int[][] result = new int[loop][TOTAL_ANGLE/5];
@@ -66,6 +68,8 @@ public class KNNTest {
 		     //Thread.sleep(100);
 		     result[l][index]=light.getNormalizedLightValue();
 		  }				
+		   System.out.print("   請按Enter 鍵繼續下一圈");
+       	   String inputS = br.readLine();		   
 		}
 		return result;
 	}
@@ -73,14 +77,16 @@ public class KNNTest {
 	static double[] scanNumber() throws Exception{
 		//Motor.A.rotateTo(0);		
 		double[] result = new double[TOTAL_ANGLE/ANGLE_STEP];
+		System.out.print("掃描資料為:");		
         for(int a=0,index=0;a<TOTAL_ANGLE;a+=ANGLE_STEP,index++) {
 		     Motor.A.rotate(ANGLE_STEP);
 		     //System.out.println("Tachometer A: " + Motor.A.getTachoCount());	
-		     int value = light.getNormalizedLightValue();
-		     //System.out.print( value+",");
+		     int value = light.getNormalizedLightValue();		     		     
+		     System.out.print( value+",");
 		     //Thread.sleep(100);
 		     result[index]=(double)value;
 		}
+        System.out.println("");        
 		return result;
 	}	
 	
@@ -105,11 +111,28 @@ public class KNNTest {
         }
         fw.close();
 	}
-
+	static double normalize( Instances dataSet) throws Exception {
+		double totalMax=0;
+        for (int i = 0; i < dataSet.numInstances(); i++) {
+        	Instance data = dataSet.get(i);
+        	double maxValue=0;
+            for(int j=0;j<data.numValues();j++) {
+            	double v = data.value(j);
+            	if(v>maxValue)
+            		maxValue = v;
+            }
+            totalMax+=maxValue;        	
+        }
+        return totalMax/dataSet.numInstances();
+	}
+	
 	static double[] trainData(String fileName,int percentage) throws Exception {
         DataSource source = new DataSource(fileName);
         Instances data = source.getDataSet();  
+        double maxLight =normalize(data);
+        System.out.println("   最大光源:"+maxLight);        
         testInstance = data.firstInstance();
+
         
        //knn.setKNN(k);
        // knn.setWindowSize(30);
@@ -140,9 +163,10 @@ public class KNNTest {
                 prob = count;
             }     
         }        
-        double result[] = new double[2];
+        double result[] = new double[3];
         result[0] = optiK;
         result[1] = 100.0*prob/test.numInstances();
+        result[2] = maxLight;
         return result;
 	}	
 	
@@ -151,7 +175,7 @@ public class KNNTest {
     public static void main(String[] args) throws Exception {
     	initNTX();    	
     	String inputS;    	
-        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        
         System.out.println("開始數字辨識作業: ");        
         System.out.println("STEP 1 建立數字特徵資料:  後續請依指示依序放入0-9 數字牌");
         System.out.print("  首先請先輸入每個數字要掃描的角度:"); 
@@ -189,18 +213,30 @@ public class KNNTest {
         inputS = br.readLine();
         int k = Integer.parseInt(inputS);       
         knn.setKNN(k);
-        
+        double maxLight =  result[2];     
         while(true) {
         System.out.print("STEP 4 請放入欲辨識的數字牌，放好後請按Enter 鍵，離開請按q");       
         inputS = br.readLine();
         if(inputS.equals("q"))
         	return;
         double[] testData = scanNumber();System.out.println("");
-        //testData = scanNumber();System.out.println("");     
+        
+        double maxValue=0;
+        for(int j=0;j<testData.length;j++) {
+        	double v = testData[j];
+        	if(v>maxValue)
+        		maxValue = v;
+        }
+        
         testInstance =(Instance) testInstance.copy();
-        for(int i=0;i<testData.length;i++)
-        testInstance.setValueSparse(i+1, testData[i]);
-        testInstance.setClassValue("1");
+                
+        for(int i=0;i<testData.length;i++) {
+           //testInstance.setValueSparse(i+1, testData[i]*result[2]/maxValue);
+           testInstance.setValueSparse(i+1, testData[i]);           
+        }   
+        System.out.print("正規化資料為:"+testInstance);System.out.println("");      
+        
+        testInstance.setClassValue("1");        
         System.out.println("辨識結果為"+(int)knn.classifyInstance(testInstance));
         }
     }  
