@@ -2,9 +2,9 @@ NXT機器人數字辨識 成果展示
 ---
 ## youtube 演示影片連結
 
-　[NXT機器人辨識數字成果演示 - 建立資料](https://youtu.be/Kx0K0d5kgj8)
+　[NXT機器人辨識數字成果演示 - 蒐集資料](https://youtu.be/g-K2oKmkb_A)
 
-　[NXT機器人辨識數字成果演示 - 建立模型與預測](https://youtu.be/9psUBdqwJIk)
+　[NXT機器人辨識數字成果演示 - 建立模型與預測](https://youtu.be/PwUd7Gediio)
  
 　觀看時畫質請設定 1080p 
 
